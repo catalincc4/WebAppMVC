@@ -1,0 +1,80 @@
+﻿@model IEnumerable<WebAppMVC.Models.Orders>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Orders</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<form asp-action="Export" class="form-inline">
+    <div class="form-group mb-2">
+        <label for="startDate" class="mr-2">Start Date</label>
+        <input type="date" class="form-control" id="startDate" name="startDate" value="@ViewData["StartDate"]" required>
+    </div>
+    <div class="form-group mb-2 ml-4">
+        <label for="endDate" class="mr-2">End Date</label>
+        <input type="date" class="form-control" id="endDate" name="endDate" value="@ViewData["EndDate"]" required>
+    </div>
+    <button type="submit"  name="format" value="csv" class="btn btn-secondary ml-4">Export to CSV</button>
+    <button type="submit"  name = "format" value="xml" class="btn btn-secondary ml-2">Export to XML</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDishes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalCost)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @foreach (var dish in item.OrderDishes)
+                    {
+                        @if (dish.Dish != null)
+                        {
+                            <h7>@dish.Dish.Name X @dish.Quantity</h7>
+
+                            <br />
+                        }
+                        else
+                        {
+                            <h7>null</h7>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCost)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
